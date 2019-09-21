@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 // import axios from 'axios';
-import {Route, NavLink, Switch} from 'react-router-dom';
+import {Route, NavLink, Switch, Redirect} from 'react-router-dom';
 import NewPost from './NewPost/NewPost';
 import Posts from './Posts/Posts';
 import FullPost from './FullPost/FullPost';
 import './Blog.css';
 
 class Blog extends Component {         
+
+    state={
+        auth:true
+    }
 
     render () {
         
@@ -15,7 +19,7 @@ class Blog extends Component {
                 <header>
                     <nav>
                         <ul>
-                            <NavLink  exact to="/">Home</NavLink>
+                            <NavLink  exact to="/posts">Home</NavLink>
                             <NavLink to={{
                                 pathname:'/new-post',
                                 hash: '#submit',
@@ -24,10 +28,13 @@ class Blog extends Component {
                         </ul>
                     </nav>
                 </header>
-                <Route path="/" exact component={Posts} />
+                
                 <Switch>
-                    <Route path="/new-post" exact component={NewPost} />
-                    <Route path="/:id" exact component={FullPost} />
+                    {this.state.auth? <Route path="/new-post" component={NewPost} /> : null}
+                    <Route path="/posts" component={Posts} />
+                    {/* <Redirect from="/" to="/posts" /> */}
+                    <Route render={()=><h1>Not Found!</h1>}/>
+                    {/* <Route path="/" component={Posts} /> */}
                 </Switch>
             </div>
         );
